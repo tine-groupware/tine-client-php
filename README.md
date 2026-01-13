@@ -1,2 +1,9 @@
 # tine-client-php
-tine json-rpc php client
+
+## setup
+
+    composer install
+
+## usage
+
+    php example.php

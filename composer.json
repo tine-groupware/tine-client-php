@@ -1,0 +1,30 @@
+{
+    "name": "tine-groupware/tine-client-php",
+    "description": "tine Groupware JSON-RPC PHP client",
+    "type": "project",
+    "keywords": ["Groupware", "Collaboration"],
+    "homepage": "https://github.com/tine-groupware/tine-client-php",
+    "require": {
+        "php": "8.1 - 8.4",
+        "datto/json-rpc-http": "^5.0",
+        "laminas/laminas-config": "^2.5",
+        "laminas/laminas-log": "^2.6"
+     },
+    "require-dev": {
+        "phpstan/phpstan": "^1.6"
+    },
+    "autoload": {
+        "psr-0": {
+            "": ["lib"]
+        }
+    },
+    "config": {
+        "secure-http": false,
+        "platform": {
+            "php": "8.4"
+        }
+    },
+    "scripts": {
+        "phpstan": "vendor/bin/phpstan analyze lib/"
+    }
+}
