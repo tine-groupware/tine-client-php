@@ -18,8 +18,12 @@ $tineConnector = new TineClient();
 echo "login ... \n";
 $tineConnector->login();
 
-echo "do something ... \n";
-// TODO implement
+// example where we fetch some CRM leads ...
+echo "Crm.searchLeads ... \n";
+$method = 'Crm.searchLeads';
+$leads = $tineConnector->{$method}(filter: [], paging: ['start' => 0, 'limit' => 4]);
+echo "Got " . count($leads['results']) . " leads\n";
+// print_r($leads);
 
 echo "logout ... \n";
 $tineConnector->logout();

@@ -6,6 +6,7 @@
  * @package     Tine Client
  * @author      Philipp Schüle <p.schuele@metaways.de>
  * @copyright   Copyright (c) 2026 Metaways Infosystems GmbH (https://www.metaways.de)
+ * @link        https://github.com/tine-groupware/tine-client-php
  */
 
 use \Datto\JsonRpc\Http\Client;
@@ -30,13 +31,6 @@ class TineClient
      */
     protected $_tine = null;
 
-    /**
-     * how many queries where send to the tine client
-     *
-     * @var int
-     */
-    protected $_tineQueries = 0;
-    
     /**
      * logger
      * 
@@ -126,7 +120,7 @@ class TineClient
             $this->_logger->info(__METHOD__ . '::' . __LINE__ . ' logging in ...');
 
             try {
-                $this->_tine->query( 'Tinebase.login', [
+                $this->_tine->query('Tinebase.login', [
                     'username' => $this->_config->username,
                     'password' => $this->_config->password
                 ], $data)->send();
@@ -161,20 +155,23 @@ class TineClient
      * @throws \Datto\JsonRpc\Http\HttpException
      * @throws ErrorException
      */
-    public function logout()
+    public function logout(): bool
     {
-        /** @var Response $response */
         $this->_tine->query('Tinebase.logout', [], $response)->send();
 
         if (!isset($response['success']) || !$response['success']) {
             $this->_logger->err(__METHOD__ . '::' . __LINE__ . ' logout failure: ' . $response->getError()->getMessage());
+            return false;
         } else {
             $this->_logger->info(__METHOD__ . '::' . __LINE__ . ' logout successful');
+            return true;
         }
     }
 
-    public function __call($method, $args)
+    public function __call(string $method, array $args): array
     {
-        // TODO implement - pass function and args to tine api
+        $this->_tine->query($method, $args, $response)->send();
+        $this->_logger->debug(__METHOD__ . '::' . __LINE__ . ' Response: ' . print_r($response, true));
+        return $response;
     }
 }
