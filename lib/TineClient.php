@@ -172,6 +172,11 @@ class TineClient
     {
         $this->_tine->query($method, $args, $response)->send();
         $this->_logger->debug(__METHOD__ . '::' . __LINE__ . ' Response: ' . print_r($response, true));
+        if ($response instanceof Datto\JsonRpc\Responses\ErrorResponse) {
+            return [
+                'error' => $response->getMessage()
+            ];
+        }
         return $response;
     }
 }
