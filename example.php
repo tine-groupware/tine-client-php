@@ -14,8 +14,8 @@ require_once 'vendor/autoload.php';
 
 $tineConnector = new TineClient();
 
-// login, do stuff, logout
-echo "login ... \n";
+// login (or use auth_token), do stuff, logout
+echo "auth ... \n";
 $tineConnector->login();
 
 // example where we fetch some CRM leads ...
@@ -32,7 +32,7 @@ $result = $tineConnector->{$method}(recordData: [
     'lead_name' => 'My special lead',
     'leadstate_id' => 1,
     'leadtype_id' => 1,
-    'leadsource_id' => 1,
+    'leadsource_id' => 2,
 ]);
 echo print_r($result, true);
 
