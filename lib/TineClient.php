@@ -51,9 +51,22 @@ class TineClient
 
         $this->_tine = new Client($this->_config->tineurl);
         $this->_tine->setHeader('X-TINE20-REQUEST-TYPE', 'JSON');
+
+        // Prefer token-based authentication when provided.
+        // This bypasses the session-based login/logout flow.
+        if ($this->hasAuthToken()) {
+            $this->_tine->setHeader('Authorization', 'Bearer ' . $this->_config->auth_token);
+        }
         
         $this->_config->setReadOnly();
         $this->_logger->info(__METHOD__ . '::' . __LINE__ . ' init complete');
+    }
+
+    protected function hasAuthToken(): bool
+    {
+        return isset($this->_config->auth_token)
+            && is_string($this->_config->auth_token)
+            && trim($this->_config->auth_token) !== '';
     }
     
     /**
@@ -116,6 +129,11 @@ class TineClient
      */
     public function login()
     {
+        if ($this->hasAuthToken()) {
+            $this->_logger->info(__METHOD__ . '::' . __LINE__ . ' using auth_token (Bearer)');
+            return;
+        }
+
         if ($this->_config->username && $this->_config->password) {
             $this->_logger->info(__METHOD__ . '::' . __LINE__ . ' logging in ...');
 
@@ -157,6 +175,11 @@ class TineClient
      */
     public function logout(): bool
     {
+        if ($this->hasAuthToken()) {
+            $this->_logger->info(__METHOD__ . '::' . __LINE__ . ' using auth_token (no logout)');
+            return true;
+        }
+
         $this->_tine->query('Tinebase.logout', [], $response)->send();
 
         if (!isset($response['success']) || !$response['success']) {
