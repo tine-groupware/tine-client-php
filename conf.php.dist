@@ -3,12 +3,11 @@ return [
     // mandatory tine url
     'tineurl'       => 'https://tine.local.tine-dev.de/',
 
-    // mandatory user name
+    // mandatory username
     'username'      => 'user',
-
-    // mandatory password
-    // TODO support auth-token here
-    'password'      => 'pass',
+    // either password or auth-token
+    //'password'      => 'pass',
+    'auth_token'    => 'token',
 
     // optional logfile, if not provided, noop logger will be used
     // 'logfile'       => '/var/log/tine-client-php.log',

@@ -55,7 +55,7 @@ class TineClient
         // Prefer token-based authentication when provided.
         // This bypasses the session-based login/logout flow.
         if ($this->hasAuthToken()) {
-            $this->_tine->setHeader('Authorization', 'Bearer ' . $this->_config->auth_token);
+            $this->_tine->setHeader('Authorization', 'Basic ' . base64_encode($this->_config->username . ':' . $this->_config->auth_token));
         }
         
         $this->_config->setReadOnly();

@@ -15,13 +15,17 @@ require_once 'vendor/autoload.php';
 $tineConnector = new TineClient();
 
 // login (or use auth_token), do stuff, logout
-echo "auth ... \n";
+echo "login ... \n";
 $tineConnector->login();
 
 // example where we fetch some CRM leads ...
 $method = 'Crm.searchLeads';
 echo "$method ... \n";
 $leads = $tineConnector->{$method}(filter: [], paging: ['start' => 0, 'limit' => 4]);
+if (!isset($leads['results'])) {
+    echo "Error: " . print_r($leads, true) . "\n";
+    exit;
+}
 echo "Got " . count($leads['results']) . " leads\n";
 // print_r($leads);
 
