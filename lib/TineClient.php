@@ -193,6 +193,7 @@ class TineClient
 
     public function __call(string $method, array $args): array
     {
+        $this->_logger->debug(__METHOD__ . '::' . __LINE__ . ' Query: ' . $method . ' ...');
         $this->_tine->query($method, $args, $response)->send();
         $this->_logger->debug(__METHOD__ . '::' . __LINE__ . ' Response: ' . print_r($response, true));
         if ($response instanceof Datto\JsonRpc\Responses\ErrorResponse) {
